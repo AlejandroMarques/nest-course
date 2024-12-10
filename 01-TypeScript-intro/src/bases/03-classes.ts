@@ -1,3 +1,4 @@
+import axios from 'axios'
 export class Pokemon {
   
   get imageUrl():string {
@@ -16,9 +17,14 @@ export class Pokemon {
   speak() {
     console.log(`${this.name}, ${this.name}`);
   }
+
+  async getMoves() {
+    const { data } = await axios.get(`https://pokeapi.co/api/v2/pokemon/${this.id}`)
+    return data.moves;
+  }
+
 }
 
 export const charmander = new Pokemon(4,'Charmander')
 
-charmander.scream()
-charmander.speak()
+charmander.getMoves()
