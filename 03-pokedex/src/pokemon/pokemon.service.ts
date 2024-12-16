@@ -28,8 +28,8 @@ export class PokemonService {
     }
   }
 
-  findAll() {
-    return `This action returns all pokemon`;
+  findAll(limit: number = 10, offset: number = 0) {
+    return this.pokemonModel.find().limit(limit).skip(offset).sort({pokemon_number: 1}).select('-__v');
   }
 
   async findOne(term: string) {
