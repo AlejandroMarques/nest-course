@@ -16,7 +16,7 @@ export class PokemonController {
 
   @Get()
   findAll(@Query() queryParams: PaginationDto) {
-    return this.pokemonService.findAll(queryParams.limit, queryParams.offset);
+    return this.pokemonService.findAll(queryParams);
   }
 
   @Get(':term')
