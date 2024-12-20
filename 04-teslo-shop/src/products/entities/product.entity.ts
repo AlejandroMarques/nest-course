@@ -1,6 +1,14 @@
-import { BeforeInsert, BeforeUpdate, Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  BeforeInsert,
+  BeforeUpdate,
+  Column,
+  Entity,
+  OneToMany,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
+import { ProductImage } from './product-image.entity';
 
-@Entity()
+@Entity({name: 'products'})
 export class Product {
   @PrimaryGeneratedColumn('uuid')
   id: string;
@@ -41,23 +49,26 @@ export class Product {
 
   @Column('text', {
     array: true,
-    default: []
+    default: [],
   })
   tags: string[];
+
+  @OneToMany(() => ProductImage, (productImage) => productImage.product, {
+    cascade: true,
+    eager: true
+  })
+  images?: ProductImage[];
 
   @BeforeInsert()
   @BeforeUpdate()
   checkSlug() {
     if (!this.slug) {
-      this.slug = this.createSlugFromText(this.title)
+      this.slug = this.createSlugFromText(this.title);
     }
-    this.slug = this.createSlugFromText(this.slug)
+    this.slug = this.createSlugFromText(this.slug);
   }
 
   private createSlugFromText(text: string) {
-    return text
-    .toLowerCase()
-    .replaceAll(' ', '_')
-    .replaceAll("'", '');
+    return text.toLowerCase().replaceAll(' ', '_').replaceAll("'", '');
   }
 }
