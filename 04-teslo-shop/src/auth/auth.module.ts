@@ -23,7 +23,7 @@ import { JwtStrategy } from './strategies/jwt.strategy';
     JwtModule.registerAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
-      useFactory:(configService: ConfigService) => {
+      useFactory: (configService: ConfigService) => {
         return {
           secret: configService.get("JWT_SECRET"),
           signOptions: {
@@ -31,8 +31,8 @@ import { JwtStrategy } from './strategies/jwt.strategy';
           }
         }
       },
-    })
+    }),
   ],
-  exports: [JwtStrategy, TypeOrmModule, PassportModule, JwtModule]
+  exports: [TypeOrmModule, PassportModule, JwtModule, JwtStrategy]
 })
 export class AuthModule {}

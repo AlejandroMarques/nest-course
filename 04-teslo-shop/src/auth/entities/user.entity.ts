@@ -1,20 +1,28 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Product } from 'src/products/entities';
+import {
+  BeforeInsert,
+  BeforeUpdate,
+  Column,
+  Entity,
+  OneToMany,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 
-@Entity({name: 'users'})
+@Entity({ name: 'users' })
 export class User {
   @PrimaryGeneratedColumn('uuid')
   id: string;
-  
+
   @Column()
   fullName: string;
 
   @Column('text', {
-    unique: true
+    unique: true,
   })
   email: string;
 
   @Column('text', {
-    select: false
+    select: false,
   })
   password: string;
 
@@ -25,7 +33,18 @@ export class User {
 
   @Column('text', {
     array: true,
-    default: ['user']
+    default: ['user'],
   })
-  roles: string[]
+  roles: string[];
+
+  @OneToMany(
+    () => Product, 
+    product => product.user)
+  products: Product[]
+
+  @BeforeInsert()
+  @BeforeUpdate()
+  checkFields() {
+    this.email.toLowerCase().trim();
+  }
 }
