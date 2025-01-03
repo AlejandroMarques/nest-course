@@ -4,19 +4,19 @@ import {
   Post,
   Body,
 } from '@nestjs/common';
+import { ApiBearerAuth, ApiResponse } from '@nestjs/swagger';
 
 import { AuthService } from './auth.service';
 import { CreateUserDto, LoginUserDto } from './dto';
 import { GetUser, Auth} from './decorators';
 import { User } from './entities/user.entity';
-import { ApiBearerAuth, ApiResponse } from '@nestjs/swagger';
 import { LoginUserResponseDto } from './dto/login-user-response.dto';
 @Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
   @Post('register')
-  @ApiResponse({status: 201, description: 'Login successfully', type: User})
+  @ApiResponse({status: 201, description: 'User created successfully', type: User})
   create(@Body() createUserDto: CreateUserDto) {
     return this.authService.register(createUserDto);
   }
